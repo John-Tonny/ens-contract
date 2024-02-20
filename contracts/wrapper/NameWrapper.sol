@@ -47,9 +47,9 @@ contract NameWrapper is
 
     uint64 private constant GRACE_PERIOD = 90 days;
     bytes32 private constant ETH_NODE =
-        0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae;
+        0x7dfbdfe6558072232b9170c1b0a8f8597d9f094974309ce1dd40662ae0b7b388;
     bytes32 private constant ETH_LABELHASH =
-        0x4f5b812789fc606be1b3b16908db13fc7a9adf7ca72641f84d75b47069d3d7f0;
+        0x2584431c0f391e645d4c0d43bf7742864c2c7a243e70c441272d9c75099581b2;
     bytes32 private constant ROOT_NODE =
         0x0000000000000000000000000000000000000000000000000000000000000000;
 
@@ -80,7 +80,7 @@ contract NameWrapper is
             MAX_EXPIRY
         );
         names[ROOT_NODE] = "\x00";
-        names[ETH_NODE] = "\x03eth\x00";
+        names[ETH_NODE] = "\x03vcl\x00";
     }
 
     function supportsInterface(
@@ -96,7 +96,7 @@ contract NameWrapper is
 
     /**
      * @notice Gets the owner of a name
-     * @param id Label as a string of the .eth domain to wrap
+     * @param id Label as a string of the .vcl domain to wrap
      * @return owner The owner of the name
      */
 
@@ -268,9 +268,9 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Wraps a .eth domain, creating a new token and sending the original ERC721 token to this contract
-     * @dev Can be called by the owner of the name on the .eth registrar or an authorised caller on the registrar
-     * @param label Label as a string of the .eth domain to wrap
+     * @notice Wraps a .vcl domain, creating a new token and sending the original ERC721 token to this contract
+     * @dev Can be called by the owner of the name on the .vcl registrar or an authorised caller on the registrar
+     * @param label Label as a string of the .vcl domain to wrap
      * @param wrappedOwner Owner of the name in this contract
      * @param ownerControlledFuses Initial owner-controlled fuses to set
      * @param resolver Resolver contract address
@@ -312,14 +312,14 @@ contract NameWrapper is
     }
 
     /**
-     * @dev Registers a new .eth second-level domain and wraps it.
+     * @dev Registers a new .vcl second-level domain and wraps it.
      *      Only callable by authorised controllers.
-     * @param label The label to register (Eg, 'foo' for 'foo.eth').
+     * @param label The label to register (Eg, 'foo' for 'foo.vcl').
      * @param wrappedOwner The owner of the wrapped name.
      * @param duration The duration, in seconds, to register the name for.
      * @param resolver The resolver address to set on the ENS registry (optional).
      * @param ownerControlledFuses Initial owner-controlled fuses to set
-     * @return registrarExpiry The expiry date of the new name on the .eth registrar, in seconds since the Unix epoch.
+     * @return registrarExpiry The expiry date of the new name on the .vcl registrar, in seconds since the Unix epoch.
      */
 
     function registerAndWrapETH2LD(
@@ -341,11 +341,11 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Renews a .eth second-level domain.
+     * @notice Renews a .vcl second-level domain.
      * @dev Only callable by authorised controllers.
-     * @param tokenId The hash of the label to register (eg, `keccak256('foo')`, for 'foo.eth').
+     * @param tokenId The hash of the label to register (eg, `keccak256('foo')`, for 'foo.vcl').
      * @param duration The number of seconds to renew the name for.
-     * @return expires The expiry date of the name on the .eth registrar, in seconds since the Unix epoch.
+     * @return expires The expiry date of the name on the .vcl registrar, in seconds since the Unix epoch.
      */
 
     function renew(
@@ -379,7 +379,7 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Wraps a non .eth domain, of any kind. Could be a DNSSEC name vitalik.xyz or a subdomain
+     * @notice Wraps a non .vcl domain, of any kind. Could be a DNSSEC name vitalik.xyz or a subdomain
      * @dev Can be called by the owner in the registry or an authorised caller in the registry
      * @param name The name to wrap, in DNS format
      * @param wrappedOwner Owner of the name in this contract
@@ -417,10 +417,10 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Unwraps a .eth domain. e.g. vitalik.eth
+     * @notice Unwraps a .vcl domain. e.g. vitalik.vcl
      * @dev Can be called by the owner in the wrapper or an authorised caller in the wrapper
-     * @param labelhash Labelhash of the .eth domain
-     * @param registrant Sets the owner in the .eth registrar to this address
+     * @param labelhash Labelhash of the .vcl domain
+     * @param registrant Sets the owner in the .vcl registrar to this address
      * @param controller Sets the owner in the registry to this address
      */
 
@@ -441,7 +441,7 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Unwraps a non .eth domain, of any kind. Could be a DNSSEC name vitalik.xyz or a subdomain
+     * @notice Unwraps a non .vcl domain, of any kind. Could be a DNSSEC name vitalik.xyz or a subdomain
      * @dev Can be called by the owner in the wrapper or an authorised caller in the wrapper
      * @param parentNode Parent namehash of the name e.g. vitalik.xyz would be namehash('xyz')
      * @param labelhash Labelhash of the name, e.g. vitalik.xyz would be keccak256('vitalik')
@@ -531,7 +531,7 @@ contract NameWrapper is
     }
 
     /**
-     * @notice Upgrades a domain of any kind. Could be a .eth name vitalik.eth, a DNSSEC name vitalik.xyz, or a subdomain
+     * @notice Upgrades a domain of any kind. Could be a .vcl name vitalik.vcl, a DNSSEC name vitalik.xyz, or a subdomain
      * @dev Can be called by the owner or an authorised caller
      * @param name The name to upgrade, in DNS format
      * @param extraData Extra data to pass to the upgrade contract
@@ -871,7 +871,7 @@ contract NameWrapper is
         uint256 tokenId,
         bytes calldata data
     ) public returns (bytes4) {
-        //check if it's the eth registrar ERC721
+        //check if it's the vcl registrar ERC721
         if (msg.sender != address(registrar)) {
             revert IncorrectTokenType();
         }
@@ -1071,7 +1071,7 @@ contract NameWrapper is
         uint64 maxExpiry
     ) private pure returns (uint64) {
         // Expiry cannot be more than maximum allowed
-        // .eth names will check registrar, non .eth check parent
+        // .vcl names will check registrar, non .vcl check parent
         if (expiry > maxExpiry) {
             expiry = maxExpiry;
         }
@@ -1092,8 +1092,8 @@ contract NameWrapper is
     ) private {
         bytes32 labelhash = keccak256(bytes(label));
         bytes32 node = _makeNode(ETH_NODE, labelhash);
-        // hardcode dns-encoded eth string for gas savings
-        bytes memory name = _addLabel(label, "\x03eth\x00");
+        // hardcode dns-encoded vcl string for gas savings
+        bytes memory name = _addLabel(label, "\x03vcl\x00");
         names[node] = name;
 
         _wrap(
